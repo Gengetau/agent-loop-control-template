@@ -2,57 +2,46 @@
 
 ## Loop Id
 
-`loop-001-example-task`
-
-## Status
-
-`completed`
+`loop-001-example`
 
 ## Business Repository
 
 `OWNER/BUSINESS_REPO`
 
-## Control Repository
+## Branch / Commit / Pull Request
 
-`OWNER/CONTROL_REPO`
-
-## Business Branch
-
-`codex/loop-001-example-task`
-
-## Business Commit
-
-`abc123-example`
-
-## Pull Request
-
-`https://github.com/OWNER/BUSINESS_REPO/pull/1`
+- Branch: `codex/loop-001-example`
+- Commit: `abc123-example`
+- Pull request: `https://github.com/OWNER/BUSINESS_REPO/pull/1`
 
 ## Executed At
 
 `2026-01-01T00:00:00Z`
 
-## Files Inspected
-
-- `docs/example.md`
-
 ## Files Changed
 
 - `docs/example.md`
 
-## Summary
+## Commands Run
 
-Codex updated the placeholder documentation page requested by the example loop.
+- `npm run docs:check`: skipped because the example repository has no documentation validation script.
 
-## Validation Performed
+## Tests Run
 
-- `npm test`: skipped because the example documentation repository has no test script.
-- Manual inspection: verified that only the approved documentation file changed.
+- `npm test`: skipped because the example changed documentation only.
 
-## Errors or Uncertainty
+## Validation Evidence
+
+Manual inspection verified that only the approved documentation file changed.
+
+## Known Limitations
 
 No runtime validation was available in this example.
 
-## Next Recommendation
+## Review Request Summary
 
-Request reviewer inspection and route the loop according to the verdict.
+Please review the documentation diff and confirm that it satisfies the loop acceptance criteria.
+
+## Recommended Next Steps
+
+Accept the loop if the documentation diff is within scope, or create a fix loop if validation evidence is insufficient.

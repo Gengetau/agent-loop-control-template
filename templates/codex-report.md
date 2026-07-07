@@ -2,56 +2,46 @@
 
 ## Loop Id
 
-`loop-001-example-task`
-
-## Status
-
-`completed`
+`loop-001-example`
 
 ## Business Repository
 
 `OWNER/BUSINESS_REPO`
 
-## Control Repository
+## Branch / Commit / Pull Request
 
-`OWNER/CONTROL_REPO`
-
-## Business Branch
-
-`codex/loop-001-example-task`
-
-## Business Commit
-
-`not-created`
-
-## Pull Request
-
-`not-created`
+- Branch: `codex/loop-001-example`
+- Commit: `not-created`
+- Pull request: `not-created`
 
 ## Executed At
 
 `2026-01-01T00:00:00Z`
 
-## Files Inspected
-
-- `templates/loop.md`
-
 ## Files Changed
 
 - `path/to/changed-file`
 
-## Summary
+## Commands Run
 
-Describe what Codex changed and why it satisfies the loop goal.
+- `command`: result summary.
 
-## Validation Performed
+## Tests Run
 
-- `node scripts/validate-loop.mjs examples/example-loop.md`: describe the result.
+- `test command`: result summary.
 
-## Errors or Uncertainty
+## Validation Evidence
 
-Document skipped checks, unresolved questions, or partial work.
+Summarize evidence that the implementation matches the loop acceptance criteria.
 
-## Next Recommendation
+## Known Limitations
 
-Recommend review, retry, blocking decision, or follow-up loop creation.
+List incomplete work, skipped checks, risks, or uncertainty.
+
+## Review Request Summary
+
+Tell the GPT Agent what changed and what needs review.
+
+## Recommended Next Steps
+
+Recommend acceptance, changes requested, blocking decision, or a likely next loop.
