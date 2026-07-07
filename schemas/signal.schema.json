@@ -48,6 +48,26 @@
       "description": "Actor that created the signal.",
       "type": "string"
     },
+    "parent_loop_id": {
+      "description": "Parent loop id when this signal belongs to a follow-up loop, or null for standalone work.",
+      "type": ["string", "null"],
+      "pattern": "^loop-[0-9]{3}-[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "attempt": {
+      "description": "Positive execution attempt number associated with this signal.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "retry_count": {
+      "description": "Number of completed retries associated with this signal.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "max_retry_count": {
+      "description": "Maximum number of execution retries allowed for the loop.",
+      "type": "integer",
+      "minimum": 0
+    },
     "routing_hint": {
       "description": "Suggested next workflow route.",
       "type": "string"
@@ -60,5 +80,33 @@
       }
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "signal_type": {
+            "const": "waiting-review"
+          }
+        },
+        "required": ["signal_type"]
+      },
+      "then": {
+        "required": ["report_path"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "signal_type": {
+            "const": "reviewed"
+          }
+        },
+        "required": ["signal_type"]
+      },
+      "then": {
+        "required": ["review_path", "verdict"]
+      }
+    }
+  ],
   "additionalProperties": true
 }

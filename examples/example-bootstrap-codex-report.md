@@ -1,10 +1,12 @@
-# Codex Execution Report
+# Example Bootstrap Codex Report
 
-## Loop Id
+This file preserves the original bootstrap execution report as an example artifact. It is intentionally stored under `examples/` so automation does not treat it as active loop evidence.
+
+## Original Loop Id
 
 `loop-001-control-template-bootstrap`
 
-## Status
+## Original Status
 
 `completed`
 
@@ -14,7 +16,7 @@
 
 ## Control Repository
 
-`Gengetau/agent-loop-control-template`
+`OWNER/CONTROL_REPO`
 
 ## Business Branch
 
@@ -85,24 +87,14 @@
 
 Codex bootstrapped the control repository template with English documentation, reusable templates, JSON schemas, minimal dependency-free Node.js scripts, clean state files, examples, and required workflow placeholders.
 
-The active workflow directories contain only `.gitkeep` placeholders in this template. The example loop is stored under `examples/`, not under an active workflow directory.
-
 ## Validation Performed
 
-- `node scripts/discover-pending-loops.mjs`: pending loop discovery returned zero candidates, as expected for a clean template.
-- `node scripts/validate-loop.mjs examples/example-loop.md`: example loop validation passed. The validator keeps canonical filename checks for real workflow files while allowing this documented example alias.
+- `node scripts/discover-pending-loops.mjs`: pending loop discovery returned zero candidates.
+- `node scripts/validate-loop.mjs examples/example-loop.md`: example loop validation passed.
 - `node --check` on each `.mjs` helper script: all helper scripts passed JavaScript syntax checks.
-- JSON parsing with PowerShell `ConvertFrom-Json`: all JSON configuration, schema, signal, template, and state files parsed successfully.
-- Non-English character scan across repository content: no Chinese, Japanese, or Korean characters were found in created repository files.
-- Active workflow directory check: `loops/waiting-approval/`, `loops/pending/`, and `loops/running/` contain only `.gitkeep`.
-- `git status --short`: inspected after implementation. The repository contained new template files under `config/`, `docs/`, `examples/`, `locks/`, `loops/`, `reports/`, `reviews/`, `schemas/`, `scripts/`, `signals/`, `state/`, `templates/`, and `README.md`.
+- JSON parsing: all JSON files parsed successfully.
+- Non-English character scan: no Chinese, Japanese, or Korean characters were found.
 
-## Errors or Uncertainty
+## Example Note
 
-No secrets, credentials, live n8n integrations, or project-specific business repository state were added.
-
-The source loop document required human approval before execution. The repository owner provided execution instruction in the active Codex session, so this bootstrap was treated as approved for the current control-template repository.
-
-## Next Recommendation
-
-Request review using the waiting-review signal, then accept the template or create a follow-up loop for any project-specific automation refinements.
+This preserved report is not active evidence. Future projects should write real reports under `reports/codex/` only while a loop is waiting for review or routing.

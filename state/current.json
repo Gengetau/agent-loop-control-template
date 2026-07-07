@@ -5,6 +5,6 @@
   "last_loop": null,
   "last_transition": "template-initialized",
   "business_repo": "OWNER/BUSINESS_REPO",
-  "control_repo": "Gengetau/agent-loop-control-template",
+  "control_repo": "OWNER/CONTROL_REPO",
   "updated_at": null
 }

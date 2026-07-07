@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project_name": "Example Agent Loop Project",
   "business_repo": "OWNER/BUSINESS_REPO",
-  "control_repo": "Gengetau/agent-loop-control-template",
+  "control_repo": "OWNER/CONTROL_REPO",
   "default_business_base_branch": "main",
   "default_work_branch_prefix": "codex/",
   "approval_required_by_default": true,

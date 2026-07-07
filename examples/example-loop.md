@@ -6,12 +6,15 @@ status: waiting-approval
 risk_level: low
 execution_mode: business-repo
 business_repo: OWNER/BUSINESS_REPO
-control_repo: Gengetau/agent-loop-control-template
+control_repo: OWNER/CONTROL_REPO
 business_base_branch: main
 work_branch: codex/loop-001-example-task
 human_approval_required: true
 created_at: 2026-01-01T00:00:00Z
 created_by: GPT Planning Agent
+parent_loop_id: null
+attempt: 1
+retry_count: 0
 max_retry_count: 3
 ---
 # Loop 001: Example Task
@@ -51,3 +54,7 @@ The reviewer should inspect the changed documentation file, Codex report, and wa
 ## Human Approval Needed
 
 Human approval is required before execution because this example demonstrates the approval boundary.
+
+## Retry and Follow-Up Metadata
+
+This example is the first attempt for a standalone loop, so `attempt` is `1`, `retry_count` is `0`, and `parent_loop_id` is `null`.

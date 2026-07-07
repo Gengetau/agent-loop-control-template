@@ -45,6 +45,7 @@ The review intake workflow watches `signals/waiting-review/`.
 Responsibilities:
 
 - Confirm that the signal points to an existing Codex report.
+- Ignore `examples/`, archived artifacts, and any signal outside active watched directories.
 - Notify a GPT reviewer or human reviewer.
 - Provide the loop document, report, and changed files as review inputs.
 - Avoid creating duplicate review requests for the same signal.
@@ -61,6 +62,7 @@ Responsibilities:
 - Move blocked loops to a human attention queue.
 - Mark superseded loops and connect them to replacement loops.
 - Archive active locks.
+- Move or archive consumed signals after routing so they are not processed again.
 - Append a verdict event to `state/history.jsonl`.
 
 ## Design Notes
@@ -68,3 +70,5 @@ Responsibilities:
 Each workflow should make small commits with clear messages. Small commits make automation failures easier to diagnose and make the repository history useful during audits.
 
 Automation should prefer additive writes and file moves over destructive rewrites. State can be reconstructed from Git history and `state/history.jsonl` when transitions are explicit.
+
+Watchers should treat `examples/` as documentation only. Example signals, example reports, and archived artifacts demonstrate file shapes but must never trigger live routing.
