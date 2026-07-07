@@ -3,16 +3,12 @@ import { existsSync, readFileSync } from "node:fs";
 import { basename, extname, normalize, resolve } from "node:path";
 
 const allowedStatuses = new Set([
-  "idle",
-  "waiting-approval",
-  "pending",
-  "running",
-  "waiting-review",
-  "reviewed",
+  "ready-for-codex",
+  "codex-running",
+  "ready-for-gpt-review",
+  "changes-requested",
   "done",
-  "blocked",
-  "failed",
-  "superseded"
+  "blocked"
 ]);
 
 const requiredFields = [
@@ -20,14 +16,11 @@ const requiredFields = [
   "loop_id",
   "title",
   "status",
-  "risk_level",
-  "execution_mode",
+  "target_business_repo",
+  "target_branch",
   "control_repo",
-  "work_branch",
-  "human_approval_required",
   "created_at",
-  "created_by",
-  "max_retry_count"
+  "created_by"
 ];
 
 const loopPathArg = process.argv[2];
@@ -50,9 +43,6 @@ if (extname(loopPath) !== ".md") {
 }
 
 const content = readFileSync(loopPath, "utf8");
-
-// The template uses simple YAML frontmatter. This parser intentionally handles
-// only scalar values because loop metadata should stay simple and portable.
 const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
 
 if (!match) {
@@ -99,7 +89,7 @@ for (const field of requiredFields) {
 }
 
 if (metadata.loop_id && !/^loop-[0-9]{3}-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(metadata.loop_id)) {
-  errors.push("loop_id must match loop-001-example-task format.");
+  errors.push("loop_id must match loop-001-example format.");
 }
 
 if (metadata.status && !allowedStatuses.has(metadata.status)) {
@@ -107,7 +97,7 @@ if (metadata.status && !allowedStatuses.has(metadata.status)) {
 }
 
 if (metadata.parent_loop_id !== undefined && metadata.parent_loop_id !== null && !/^loop-[0-9]{3}-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(metadata.parent_loop_id)) {
-  errors.push("parent_loop_id must be null or match loop-001-example-task format.");
+  errors.push("parent_loop_id must be null or match loop-001-example format.");
 }
 
 if (metadata.attempt !== undefined && (!Number.isInteger(metadata.attempt) || metadata.attempt < 1)) {
@@ -119,19 +109,15 @@ if (metadata.retry_count !== undefined && (!Number.isInteger(metadata.retry_coun
 }
 
 if (metadata.max_retry_count !== undefined && (!Number.isInteger(metadata.max_retry_count) || metadata.max_retry_count < 0)) {
-  errors.push("max_retry_count must be a non-negative integer.");
+  errors.push("max_retry_count must be a non-negative integer when provided.");
 }
 
 if (metadata.loop_id) {
   const expectedFilename = `${metadata.loop_id}.md`;
   const actualFilename = basename(loopPath);
+  const isExampleAlias = normalize(loopPath).endsWith(normalize("examples/example-loop.md"));
 
-  // The repository intentionally includes examples/example-loop.md because the
-  // loop specification requires that example filename. Real workflow loop files
-  // must still use the canonical <loop_id>.md name.
-  const isDocumentedExampleAlias = normalize(loopPath).endsWith(normalize("examples/example-loop.md"));
-
-  if (actualFilename !== expectedFilename && !isDocumentedExampleAlias) {
+  if (actualFilename !== expectedFilename && !isExampleAlias) {
     errors.push(`Filename must be ${expectedFilename}, but found ${actualFilename}.`);
   }
 }
@@ -149,6 +135,7 @@ console.log(JSON.stringify({
   loop_id: metadata.loop_id,
   status: metadata.status,
   title: metadata.title,
+  target_business_repo: metadata.target_business_repo,
   filename: basename(loopPath),
   canonical_filename: `${metadata.loop_id}.md`
 }, null, 2));

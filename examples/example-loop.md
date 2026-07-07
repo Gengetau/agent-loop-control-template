@@ -1,15 +1,11 @@
 ---
 schema_version: 1
-loop_id: loop-001-example-task
-title: Example Task
-status: waiting-approval
-risk_level: low
-execution_mode: business-repo
-business_repo: OWNER/BUSINESS_REPO
+loop_id: loop-001-example
+title: Example Implementation Loop
+status: ready-for-codex
+target_business_repo: OWNER/BUSINESS_REPO
+target_branch: codex/loop-001-example
 control_repo: OWNER/CONTROL_REPO
-business_base_branch: main
-work_branch: codex/loop-001-example-task
-human_approval_required: true
 created_at: 2026-01-01T00:00:00Z
 created_by: GPT Planning Agent
 parent_loop_id: null
@@ -17,29 +13,33 @@ attempt: 1
 retry_count: 0
 max_retry_count: 3
 ---
-# Loop 001: Example Task
+# Loop 001: Example Implementation Loop
 
-## Purpose
+## Background Context
 
-Demonstrate how a future project can describe a small approved task for Codex.
+This example shows a small loop for Codex to execute against a business repository.
 
-## Executor Goal
+## Implementation Goal
 
 Update a placeholder documentation page in the business repository and provide evidence that the change was validated.
 
-## Scope
+## Allowed Changes
 
-Codex may inspect documentation files and update one placeholder page in `OWNER/BUSINESS_REPO`.
+- Documentation files in `OWNER/BUSINESS_REPO`.
 
-## Out of Scope
+## Forbidden Changes
 
-Codex must not change application code, credentials, deployment settings, or control repository automation.
+- Application code.
+- Credentials, secrets, deployment settings, or control repository protocol files.
+
+## Required Commands
+
+- Run documentation validation if the business repository provides it.
 
 ## Required Outputs
 
-- A business repository branch named `codex/loop-001-example-task`.
+- A business repository branch named `codex/loop-001-example`.
 - A Codex report under `reports/codex/`.
-- A waiting-review signal under `signals/waiting-review/`.
 
 ## Acceptance Criteria
 
@@ -47,13 +47,13 @@ Codex must not change application code, credentials, deployment settings, or con
 - The Codex report lists files changed and validation performed.
 - No secrets or environment-specific values are added.
 
-## Reviewer Checks
+## Review Instructions
 
-The reviewer should inspect the changed documentation file, Codex report, and waiting-review signal.
+The GPT Agent should inspect the changed documentation file, Codex report, and validation evidence.
 
-## Human Approval Needed
+## Next-Loop Planning Hints
 
-Human approval is required before execution because this example demonstrates the approval boundary.
+If accepted, create the next loop. If validation is missing, create a fix loop.
 
 ## Retry and Follow-Up Metadata
 

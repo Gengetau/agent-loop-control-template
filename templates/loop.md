@@ -1,15 +1,11 @@
 ---
 schema_version: 1
-loop_id: loop-001-example-task
-title: Example Task
-status: waiting-approval
-risk_level: low
-execution_mode: business-repo
-business_repo: OWNER/BUSINESS_REPO
+loop_id: loop-001-example
+title: Example Implementation Loop
+status: ready-for-codex
+target_business_repo: OWNER/BUSINESS_REPO
+target_branch: codex/loop-001-example
 control_repo: OWNER/CONTROL_REPO
-business_base_branch: main
-work_branch: codex/loop-001-example-task
-human_approval_required: true
 created_at: 2026-01-01T00:00:00Z
 created_by: GPT Planning Agent
 parent_loop_id: null
@@ -17,39 +13,43 @@ attempt: 1
 retry_count: 0
 max_retry_count: 3
 ---
-# Loop 001: Example Task
+# Loop 001: Example Implementation Loop
 
-## Purpose
+## Background Context
 
-Explain why this loop exists and what user or project outcome it should create.
+Summarize the project context Codex needs before making changes. Link to relevant files under `project/` and the business repository.
 
-## Executor Goal
+## Implementation Goal
 
-Describe the concrete result Codex must produce. Keep this focused on observable repository changes.
+Describe the concrete change Codex should make in the business repository.
 
-## Scope
+## Allowed Changes
 
-List the files, directories, repositories, or behaviors Codex may change.
+List the files, directories, or behaviors Codex may modify.
 
-## Out of Scope
+## Forbidden Changes
 
-List anything Codex must not change during this loop, even if it looks related.
+List anything Codex must not modify, even if it looks related.
+
+## Required Commands
+
+List commands Codex must run, such as tests, linters, builds, or focused validation scripts.
 
 ## Required Outputs
 
-List every artifact Codex must create or update, including reports and signals.
+List required business repository changes and the Codex report path.
 
 ## Acceptance Criteria
 
 Define the checks a reviewer should use to decide whether the loop is complete.
 
-## Reviewer Checks
+## Review Instructions
 
-Describe the evidence the reviewer should inspect, including commands, changed files, reports, and risks.
+Tell the GPT Agent what to inspect during review.
 
-## Human Approval Needed
+## Next-Loop Planning Hints
 
-Explain whether human approval is required and which decision the human is approving.
+Suggest likely follow-up work if this loop is accepted or changes are requested.
 
 ## Retry and Follow-Up Metadata
 

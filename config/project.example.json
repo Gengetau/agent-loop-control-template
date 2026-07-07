@@ -1,17 +1,13 @@
 {
   "schema_version": 1,
-  "project_name": "Example Agent Loop Project",
+  "project_name": "Example Project",
   "business_repo": "OWNER/BUSINESS_REPO",
   "control_repo": "OWNER/CONTROL_REPO",
   "default_business_base_branch": "main",
   "default_work_branch_prefix": "codex/",
-  "approval_required_by_default": true,
-  "max_retry_count": 3,
-  "artifact_paths": {
-    "loops_pending": "loops/pending",
-    "reports_codex": "reports/codex",
-    "reviews": "reviews",
-    "signals_waiting_review": "signals/waiting-review",
-    "signals_reviewed": "signals/reviewed"
-  }
+  "current_state_path": "state/current.md",
+  "project_docs_path": "project",
+  "loops_path": "loops",
+  "codex_reports_path": "reports/codex",
+  "gpt_reviews_path": "reviews/gpt-agent"
 }
