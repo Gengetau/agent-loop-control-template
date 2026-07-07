@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "signal_type": "waiting-review",
+  "loop_id": "loop-002-template-cleanup-and-hardening",
+  "status": "waiting-review",
+  "created_at": "2026-07-07T00:00:00Z",
+  "created_by": "Codex Executor",
+  "parent_loop_id": "loop-001-control-template-bootstrap",
+  "attempt": 1,
+  "retry_count": 0,
+  "max_retry_count": 3,
+  "report_path": "reports/codex/loop-002-template-cleanup-and-hardening-report.md",
+  "routing_hint": "request-review",
+  "artifact_paths": [
+    "reports/codex/loop-002-template-cleanup-and-hardening-report.md"
+  ],
+  "_comment": "This signal is the required loop-002 review request. Move or archive it after review so future template forks start clean."
+}

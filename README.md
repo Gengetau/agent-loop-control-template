@@ -37,6 +37,13 @@ node scripts/validate-loop.mjs examples/example-loop.md
 
 Use this repository as a GitHub template or fork it for each control-plane installation. Keep control files in this repository, and keep product source code in a separate business repository unless your project explicitly chooses a single-repository workflow.
 
+If you prefer npm scripts, the same checks are available as:
+
+```bash
+npm run discover
+npm run validate:example
+```
+
 ## Initializing a New Project
 
 1. Copy `config/project.example.json` to `config/project.json`.
@@ -47,6 +54,8 @@ Use this repository as a GitHub template or fork it for each control-plane insta
 
 `scripts/init-project.mjs` prints the project files that are expected to be customized. It is conservative by design and does not overwrite history or active loop state.
 
+Template users must replace placeholders such as `OWNER/BUSINESS_REPO` and `OWNER/CONTROL_REPO` before running real automation. Schema `$id` URLs may still point to this source template repository; those identifiers describe where the schema definition came from, not the target repository for a new project.
+
 ## Safe Files to Edit
 
 - `config/project.json`: local project settings copied from the example file.
@@ -55,6 +64,7 @@ Use this repository as a GitHub template or fork it for each control-plane insta
 - `docs/`: protocol documentation for humans and agents.
 - `schemas/`: validation schemas that can evolve with the protocol.
 - `scripts/`: dependency-free helper scripts for validation and discovery.
+- `examples/`: non-active example artifacts that demonstrate the protocol.
 
 Do not edit files under workflow state directories by hand unless you are deliberately performing a state transition.
 
@@ -73,6 +83,8 @@ Do not edit files under workflow state directories by hand unless you are delibe
 - `state/`: current state and append-only history.
 
 Active workflow directories should contain only `.gitkeep` files in a clean template. Real loop files belong there only after a project starts using the template.
+
+Clean template state must not contain active reports, active waiting-review signals, or active loop files. Example artifacts belong under `examples/` so that n8n or another watcher does not route them as real work.
 
 ## Naming Rules
 
@@ -93,6 +105,8 @@ The scripts are intentionally small and dependency-free:
 ```bash
 node scripts/discover-pending-loops.mjs
 node scripts/validate-loop.mjs examples/example-loop.md
+npm run discover
+npm run validate:example
 ```
 
 These checks are not a replacement for full automation, but they provide a stable baseline for n8n workflows, GitHub Actions, or local review.

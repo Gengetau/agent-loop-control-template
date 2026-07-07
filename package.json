@@ -1,0 +1,11 @@
+{
+  "name": "agent-loop-control-template",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Dependency-free control repository template for GPT, Codex, n8n, and GitHub agent loops.",
+  "type": "module",
+  "scripts": {
+    "discover": "node scripts/discover-pending-loops.mjs",
+    "validate:example": "node scripts/validate-loop.mjs examples/example-loop.md"
+  }
+}

@@ -58,6 +58,15 @@ Humans may approve, reject, unblock, or supersede loops at any point.
 
 ## Retry Policy
 
-Each loop may include `max_retry_count`. Automation should count previous attempts before moving a reviewed loop back to `pending`.
+Each loop may include retry and follow-up metadata:
+
+- `attempt`: the positive attempt number for the current execution of a loop. The first execution is `1`.
+- `retry_count`: the number of completed retries after failed or changes-requested outcomes. The first execution normally starts at `0`.
+- `max_retry_count`: the non-negative limit for retries before the loop should be escalated or replaced.
+- `parent_loop_id`: the loop that caused this follow-up or replacement loop, or `null` for standalone work.
+
+Automation should update `attempt` and `retry_count` consistently before moving a reviewed loop back to `pending`.
 
 When the retry limit is reached, the loop should move to `blocked`, `failed`, or `superseded` with a clear explanation.
+
+Follow-up fix loops should usually create a new `loop_id` and set `parent_loop_id` to the earlier loop. Reusing the same loop id is better reserved for mechanical retries that do not change scope.

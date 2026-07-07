@@ -106,6 +106,22 @@ if (metadata.status && !allowedStatuses.has(metadata.status)) {
   errors.push(`Invalid status: ${metadata.status}`);
 }
 
+if (metadata.parent_loop_id !== undefined && metadata.parent_loop_id !== null && !/^loop-[0-9]{3}-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(metadata.parent_loop_id)) {
+  errors.push("parent_loop_id must be null or match loop-001-example-task format.");
+}
+
+if (metadata.attempt !== undefined && (!Number.isInteger(metadata.attempt) || metadata.attempt < 1)) {
+  errors.push("attempt must be a positive integer when provided.");
+}
+
+if (metadata.retry_count !== undefined && (!Number.isInteger(metadata.retry_count) || metadata.retry_count < 0)) {
+  errors.push("retry_count must be a non-negative integer when provided.");
+}
+
+if (metadata.max_retry_count !== undefined && (!Number.isInteger(metadata.max_retry_count) || metadata.max_retry_count < 0)) {
+  errors.push("max_retry_count must be a non-negative integer.");
+}
+
 if (metadata.loop_id) {
   const expectedFilename = `${metadata.loop_id}.md`;
   const actualFilename = basename(loopPath);

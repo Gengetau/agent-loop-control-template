@@ -14,7 +14,7 @@
 
 ## Control Repository
 
-`Gengetau/agent-loop-control-template`
+`OWNER/CONTROL_REPO`
 
 ## Business Branch
 
