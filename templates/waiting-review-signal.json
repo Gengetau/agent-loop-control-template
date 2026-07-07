@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "signal_type": "waiting-review",
+  "loop_id": "loop-001-example-task",
+  "status": "waiting-review",
+  "created_at": "2026-01-01T00:00:00Z",
+  "created_by": "Codex Executor",
+  "report_path": "reports/codex/loop-001-example-task-report.md",
+  "routing_hint": "request-review",
+  "artifact_paths": [
+    "loops/running/loop-001-example-task.md",
+    "reports/codex/loop-001-example-task-report.md"
+  ],
+  "_comment": "Copy this file when Codex finishes execution and needs a reviewer to inspect the result."
+}

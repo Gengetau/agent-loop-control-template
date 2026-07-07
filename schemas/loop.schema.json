@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Gengetau/agent-loop-control-template/schemas/loop.schema.json",
+  "title": "Loop Document Metadata",
+  "description": "Validates the structured frontmatter metadata for an agent-loop document.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "loop_id",
+    "title",
+    "status",
+    "risk_level",
+    "execution_mode",
+    "control_repo",
+    "work_branch",
+    "human_approval_required",
+    "created_at",
+    "created_by",
+    "max_retry_count"
+  ],
+  "properties": {
+    "schema_version": {
+      "description": "Version of the loop metadata schema.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "loop_id": {
+      "description": "Canonical loop identifier used as the Markdown filename.",
+      "type": "string",
+      "pattern": "^loop-[0-9]{3}-[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "title": {
+      "description": "Human-readable loop title.",
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "description": "Current workflow state of the loop.",
+      "type": "string",
+      "enum": [
+        "idle",
+        "waiting-approval",
+        "pending",
+        "running",
+        "waiting-review",
+        "reviewed",
+        "done",
+        "blocked",
+        "failed",
+        "superseded"
+      ]
+    },
+    "risk_level": {
+      "description": "Expected implementation risk.",
+      "type": "string",
+      "enum": ["low", "medium", "high"]
+    },
+    "execution_mode": {
+      "description": "Whether the loop targets a business repository, the control repository, or documentation only.",
+      "type": "string",
+      "enum": ["business-repo", "control-template-repo", "control-repo", "documentation-only"]
+    },
+    "business_repo": {
+      "description": "Business repository in OWNER/REPO form, or null for control-only loops.",
+      "type": ["string", "null"],
+      "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+    },
+    "control_repo": {
+      "description": "Control repository in OWNER/REPO form.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+    },
+    "business_base_branch": {
+      "description": "Base branch for business repository changes, or null when not applicable.",
+      "type": ["string", "null"]
+    },
+    "work_branch": {
+      "description": "Branch that the executor should use for work.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._/-]+$"
+    },
+    "human_approval_required": {
+      "description": "Whether a human must approve the loop before execution.",
+      "type": "boolean"
+    },
+    "created_at": {
+      "description": "ISO 8601 timestamp when the loop was created.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Actor that created the loop.",
+      "type": "string",
+      "minLength": 1
+    },
+    "max_retry_count": {
+      "description": "Maximum number of execution retries before escalation.",
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": true
+}

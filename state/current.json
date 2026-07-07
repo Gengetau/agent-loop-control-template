@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "status": "idle",
+  "active_loop": null,
+  "last_loop": null,
+  "last_transition": "template-initialized",
+  "business_repo": "OWNER/BUSINESS_REPO",
+  "control_repo": "Gengetau/agent-loop-control-template",
+  "updated_at": null
+}

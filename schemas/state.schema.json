@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Gengetau/agent-loop-control-template/schemas/state.schema.json",
+  "title": "Control Repository State",
+  "description": "Validates the small current-state snapshot for the control repository.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "status",
+    "active_loop",
+    "last_loop",
+    "last_transition",
+    "business_repo",
+    "control_repo",
+    "updated_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "description": "Version of the state schema.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "status": {
+      "description": "Current global workflow status.",
+      "type": "string",
+      "enum": [
+        "idle",
+        "waiting-approval",
+        "pending",
+        "running",
+        "waiting-review",
+        "reviewed",
+        "done",
+        "blocked",
+        "failed",
+        "superseded"
+      ]
+    },
+    "active_loop": {
+      "description": "Currently active loop id, or null when idle.",
+      "type": ["string", "null"]
+    },
+    "last_loop": {
+      "description": "Most recently routed loop id, or null for a clean template.",
+      "type": ["string", "null"]
+    },
+    "last_transition": {
+      "description": "Human-readable name of the latest state transition.",
+      "type": "string"
+    },
+    "business_repo": {
+      "description": "Default business repository placeholder or configured repository.",
+      "type": "string"
+    },
+    "control_repo": {
+      "description": "Control repository in OWNER/REPO form.",
+      "type": "string"
+    },
+    "updated_at": {
+      "description": "ISO 8601 timestamp when state was updated, or null for a clean template.",
+      "type": ["string", "null"],
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": true
+}
