@@ -45,8 +45,17 @@ The Business Work Agent still revalidates the authorization immediately before
 merge. The required check is enforcement, not a replacement for the role
 protocol.
 
+Copy the reference implementation from `business-kit/`. Configure
+`CONTROL_REPOSITORY` in its workflow and add a read-only
+`CONTROL_REPO_READ_TOKEN` Actions secret. Require the resulting
+`Control Authorization` job in branch protection.
+
 ## Receipt Transport
 
 A receipt may be stored as a PR comment, a check payload, or a file under
 `.agent-loop/receipts/`. Whichever transport is selected must preserve the
 exact JSON payload and make revisions distinguishable.
+
+Do not include the authorization gate itself in the command's
+`required_checks`; the gate validates the other required checks and would
+otherwise wait on itself.

@@ -1,0 +1,12 @@
+{
+  "schema": "business-agent-runtime/v2",
+  "program_id": null,
+  "loop_id": null,
+  "status": "released",
+  "run_id": null,
+  "lease_expires_at": null,
+  "last_command_nonce": null,
+  "last_receipt_head_sha": null,
+  "next_safe_action": null,
+  "updated_at": null
+}

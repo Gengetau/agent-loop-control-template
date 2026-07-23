@@ -71,7 +71,10 @@ starting a real program.
 5. Run `npm test`.
 6. Install `skills/control-work-governor` in the control account and
    `skills/business-work-executor` in the business account.
-7. Start one long-running Work chat for each role and invoke its installed
+7. Copy `business-kit/` into the business repository, configure its read-only
+   control-repository token and protected authorization check, and run the kit
+   test.
+8. Start one long-running Work chat for each role and invoke its installed
    Skill.
 
 ## Durable Artifacts
@@ -89,6 +92,8 @@ starting a real program.
 - `checkpoints/`: resumable exit and recovery snapshots.
 - `incidents/`: hard-block and rollback evidence.
 - `skills/`: installable connector-first Skills for both Work roles.
+- `business-kit/`: copyable business runtime, exact-head authorization gate,
+  tests, and repository instructions.
 - `templates/`: copyable protocol artifacts.
 - `examples/`: complete example artifacts.
 

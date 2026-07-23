@@ -11,6 +11,7 @@
     "validate:protocol": "node scripts/validate-protocol.mjs",
     "validate:skills": "node scripts/validate-skills.mjs",
     "test:protocol": "node scripts/test-protocol.mjs",
-    "test": "npm run validate:loop && npm run validate:state && npm run validate:protocol && npm run validate:skills && npm run test:protocol"
+    "test:business-gate": "node business-kit/scripts/test-control-authorization-gate.mjs",
+    "test": "npm run validate:loop && npm run validate:state && npm run validate:protocol && npm run validate:skills && npm run test:protocol && npm run test:business-gate"
   }
 }
