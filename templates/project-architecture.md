@@ -2,7 +2,8 @@
 
 ## Overview
 
-Describe the current architecture at a level useful for Codex and the GPT Agent.
+Describe the current architecture at a level useful for the Business and
+Control Work Agents.
 
 ## Key Components
 

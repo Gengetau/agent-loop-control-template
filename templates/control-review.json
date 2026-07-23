@@ -1,0 +1,16 @@
+{
+  "schema": "control-review/v2",
+  "program_id": "PROGRAM_ID",
+  "loop_id": "LOOP_ID",
+  "command_nonce": "COMMAND_NONCE",
+  "receipt_nonce": "RECEIPT_NONCE",
+  "business_repo": "OWNER/BUSINESS_REPO",
+  "pull_request": 1,
+  "reviewed_head_sha": "HEAD_SHA",
+  "verdict": "accepted",
+  "acceptance_results": [],
+  "required_fixes": [],
+  "risks": [],
+  "reviewed_at": "2026-01-01T00:00:00Z",
+  "review_digest": "sha256:REVIEW_DIGEST"
+}

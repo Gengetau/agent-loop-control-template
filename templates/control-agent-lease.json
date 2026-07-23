@@ -1,0 +1,13 @@
+{
+  "schema": "agent-loop-role-lease/v2",
+  "role": "control-work-agent",
+  "program_id": "PROGRAM_ID",
+  "loop_id": "LOOP_ID",
+  "status": "released",
+  "run_id": null,
+  "claimed_transition": null,
+  "acquired_at": null,
+  "expires_at": null,
+  "predecessor_run_id": null,
+  "updated_at": "2026-01-01T00:00:00Z"
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "agent-loop-exit-checkpoint/v2",
+  "program_id": "example-v1",
+  "loop_id": "loop-001-example",
+  "exit_reason": "quota-exhausted",
+  "resumable": true,
+  "resume_status": "control-reviewing",
+  "control_head": "CONTROL_HEAD_SHA",
+  "business_head": "BUSINESS_HEAD_SHA",
+  "active_pull_request": 1,
+  "last_command_nonce": "example-v1-loop-001-command-001",
+  "last_receipt_nonce": "example-v1-loop-001-receipt-001",
+  "attempts": [],
+  "next_safe_action": "Resume independent review of the recorded pull request head.",
+  "created_at": "2026-01-01T00:30:00Z"
+}

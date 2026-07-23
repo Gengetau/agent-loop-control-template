@@ -1,11 +1,17 @@
 {
   "name": "agent-loop-control-template",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
-  "description": "Dependency-free dual-agent control repository template for Codex execution and GPT Agent review.",
+  "description": "Dependency-free control plane for two autonomous ChatGPT Work agents.",
   "type": "module",
   "scripts": {
-    "validate:loop": "node scripts/validate-loop.mjs examples/example-loop.md",
-    "show:state": "node scripts/show-state.mjs"
+    "show:state": "node scripts/show-state.mjs",
+    "validate:loop": "node scripts/validate-loop.mjs loops/loop-001-example.md",
+    "validate:state": "node scripts/validate-state.mjs",
+    "validate:protocol": "node scripts/validate-protocol.mjs",
+    "validate:skills": "node scripts/validate-skills.mjs",
+    "test:protocol": "node scripts/test-protocol.mjs",
+    "test:business-gate": "node business-kit/scripts/test-control-authorization-gate.mjs",
+    "test": "npm run validate:loop && npm run validate:state && npm run validate:protocol && npm run validate:skills && npm run test:protocol && npm run test:business-gate"
   }
 }

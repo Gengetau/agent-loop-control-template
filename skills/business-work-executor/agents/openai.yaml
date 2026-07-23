@@ -1,0 +1,7 @@
+interface:
+  display_name: "Business Work Executor"
+  short_description: "Execute autonomous delivery in business repositories"
+  default_prompt: "Use $business-work-executor to execute the current control command and continue the delivery loop."
+
+policy:
+  allow_implicit_invocation: true

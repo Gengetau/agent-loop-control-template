@@ -1,0 +1,128 @@
+name: Control Authorization
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+permissions:
+  contents: read
+  pull-requests: read
+  checks: read
+
+jobs:
+  authorize:
+    runs-on: ubuntu-latest
+    env:
+      CONTROL_REPOSITORY: OWNER/CONTROL_REPO
+      CONTROL_STATE_PATH: state/current.json
+    steps:
+      - name: Check out trusted gate implementation
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Build authorization context
+        uses: actions/github-script@v7
+        env:
+          CONTROL_TOKEN: ${{ secrets.CONTROL_REPO_READ_TOKEN }}
+        with:
+          script: |
+            const fs = require("fs");
+            const [controlOwner, controlRepo] = process.env.CONTROL_REPOSITORY.split("/");
+            if (!controlOwner || !controlRepo) {
+              core.setFailed("CONTROL_REPOSITORY must use OWNER/REPO format.");
+              return;
+            }
+            if (!process.env.CONTROL_TOKEN) {
+              core.setFailed("CONTROL_REPO_READ_TOKEN is not configured.");
+              return;
+            }
+
+            async function readControlJson(path) {
+              const response = await github.request(
+                "GET /repos/{owner}/{repo}/contents/{path}",
+                {
+                  owner: controlOwner,
+                  repo: controlRepo,
+                  path,
+                  headers: {
+                    authorization: `Bearer ${process.env.CONTROL_TOKEN}`
+                  }
+                }
+              );
+              if (Array.isArray(response.data) || response.data.type !== "file") {
+                throw new Error(`Expected control file: ${path}`);
+              }
+              return JSON.parse(
+                Buffer.from(response.data.content, "base64").toString("utf8")
+              );
+            }
+
+            const state = await readControlJson(process.env.CONTROL_STATE_PATH);
+            for (const field of [
+              "current_command",
+              "last_business_receipt",
+              "last_control_review",
+              "active_authorization"
+            ]) {
+              if (!state[field]) {
+                throw new Error(`Control state is missing ${field}.`);
+              }
+            }
+
+            const [command, receipt, review, authorization] = await Promise.all([
+              readControlJson(state.current_command),
+              readControlJson(state.last_business_receipt),
+              readControlJson(state.last_control_review),
+              readControlJson(state.active_authorization)
+            ]);
+
+            const pullRequest = context.payload.pull_request;
+            if (!pullRequest) {
+              throw new Error("This workflow requires a pull request event.");
+            }
+            const head = pullRequest.head.sha;
+            const checksResponse = await github.rest.checks.listForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: head,
+              per_page: 100
+            });
+            const checks = checksResponse.data.check_runs
+              .filter(check => check.name !== "authorize")
+              .map(check => ({
+                name: check.name,
+                status: check.conclusion === "success" ? "success" : check.status,
+                head_sha: head,
+                url: check.html_url
+              }));
+
+            const gateContext = {
+              now: new Date().toISOString(),
+              control_state: state,
+              command,
+              receipt,
+              review,
+              authorization,
+              business: {
+                repository: `${context.repo.owner}/${context.repo.repo}`,
+                pull_request: pullRequest.number,
+                head_sha: head,
+                checks
+              }
+            };
+            fs.writeFileSync(
+              `${process.env.RUNNER_TEMP}/agent-loop-authorization.json`,
+              `${JSON.stringify(gateContext, null, 2)}\n`,
+              "utf8"
+            );
+
+      - name: Verify exact-head authorization
+        run: |
+          node scripts/control-authorization-gate.mjs \
+            "$RUNNER_TEMP/agent-loop-authorization.json"

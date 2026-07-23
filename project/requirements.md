@@ -12,8 +12,8 @@ Replace this file with project-specific requirements before starting real loops.
 
 ## Constraints
 
-- Add constraints that Codex and the GPT Agent should respect.
+- Add constraints that the Business and Control Work Agents should respect.
 
 ## Open Questions
 
-- Add questions that need human or GPT Agent decisions.
+- Add questions that must be deferred to human major-version planning.

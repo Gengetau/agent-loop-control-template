@@ -1,13 +1,19 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_name": "Example Project",
   "business_repo": "OWNER/BUSINESS_REPO",
   "control_repo": "OWNER/CONTROL_REPO",
   "default_business_base_branch": "main",
-  "default_work_branch_prefix": "codex/",
-  "current_state_path": "state/current.md",
+  "default_work_branch_prefix": "agent/",
+  "poll_interval_seconds": 300,
+  "current_state_path": "state/current.json",
   "project_docs_path": "project",
+  "programs_path": "programs",
   "loops_path": "loops",
-  "codex_reports_path": "reports/codex",
-  "gpt_reviews_path": "reviews/gpt-agent"
+  "commands_path": "commands",
+  "business_receipts_path": "receipts/business",
+  "control_reviews_path": "reviews/control-agent",
+  "authorizations_path": "authorizations",
+  "checkpoints_path": "checkpoints",
+  "incidents_path": "incidents"
 }

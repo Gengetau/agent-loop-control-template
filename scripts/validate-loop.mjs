@@ -1,141 +1,36 @@
 #!/usr/bin/env node
-import { existsSync, readFileSync } from "node:fs";
-import { basename, extname, normalize, resolve } from "node:path";
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
+import {
+  parseFrontmatterFile,
+  printErrorsAndExit,
+  validateLoop
+} from "./lib/protocol.mjs";
 
-const allowedStatuses = new Set([
-  "ready-for-codex",
-  "codex-running",
-  "ready-for-gpt-review",
-  "changes-requested",
-  "done",
-  "blocked"
-]);
-
-const requiredFields = [
-  "schema_version",
-  "loop_id",
-  "title",
-  "status",
-  "target_business_repo",
-  "target_branch",
-  "control_repo",
-  "created_at",
-  "created_by"
-];
-
-const loopPathArg = process.argv[2];
-
-if (!loopPathArg) {
-  console.error("Usage: node scripts/validate-loop.mjs <loop-file-path>");
-  process.exit(1);
-}
-
-const loopPath = resolve(loopPathArg);
+const loopPath = resolve(process.argv[2] ?? "loops/loop-001-example.md");
 
 if (!existsSync(loopPath)) {
   console.error(`Loop file does not exist: ${loopPath}`);
   process.exit(1);
 }
 
-if (extname(loopPath) !== ".md") {
-  console.error("Loop file must use the .md extension.");
+let parsed;
+try {
+  parsed = parseFrontmatterFile(loopPath);
+} catch (error) {
+  console.error(error.message);
   process.exit(1);
 }
 
-const content = readFileSync(loopPath, "utf8");
-const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-
-if (!match) {
-  console.error("Loop file is missing YAML frontmatter.");
-  process.exit(1);
-}
-
-const metadata = {};
-
-for (const line of match[1].split(/\r?\n/)) {
-  const trimmed = line.trim();
-  if (!trimmed || trimmed.startsWith("#")) {
-    continue;
-  }
-
-  const separatorIndex = trimmed.indexOf(":");
-  if (separatorIndex === -1) {
-    console.error(`Invalid frontmatter line: ${line}`);
-    process.exit(1);
-  }
-
-  const key = trimmed.slice(0, separatorIndex).trim();
-  const rawValue = trimmed.slice(separatorIndex + 1).trim();
-
-  if (rawValue === "null") {
-    metadata[key] = null;
-  } else if (rawValue === "true") {
-    metadata[key] = true;
-  } else if (rawValue === "false") {
-    metadata[key] = false;
-  } else if (/^[0-9]+$/.test(rawValue)) {
-    metadata[key] = Number(rawValue);
-  } else {
-    metadata[key] = rawValue.replace(/^["']|["']$/g, "");
-  }
-}
-
-const errors = [];
-
-for (const field of requiredFields) {
-  if (!(field in metadata)) {
-    errors.push(`Missing required field: ${field}`);
-  }
-}
-
-if (metadata.loop_id && !/^loop-[0-9]{3}-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(metadata.loop_id)) {
-  errors.push("loop_id must match loop-001-example format.");
-}
-
-if (metadata.status && !allowedStatuses.has(metadata.status)) {
-  errors.push(`Invalid status: ${metadata.status}`);
-}
-
-if (metadata.parent_loop_id !== undefined && metadata.parent_loop_id !== null && !/^loop-[0-9]{3}-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(metadata.parent_loop_id)) {
-  errors.push("parent_loop_id must be null or match loop-001-example format.");
-}
-
-if (metadata.attempt !== undefined && (!Number.isInteger(metadata.attempt) || metadata.attempt < 1)) {
-  errors.push("attempt must be a positive integer when provided.");
-}
-
-if (metadata.retry_count !== undefined && (!Number.isInteger(metadata.retry_count) || metadata.retry_count < 0)) {
-  errors.push("retry_count must be a non-negative integer when provided.");
-}
-
-if (metadata.max_retry_count !== undefined && (!Number.isInteger(metadata.max_retry_count) || metadata.max_retry_count < 0)) {
-  errors.push("max_retry_count must be a non-negative integer when provided.");
-}
-
-if (metadata.loop_id) {
-  const expectedFilename = `${metadata.loop_id}.md`;
-  const actualFilename = basename(loopPath);
-  const isExampleAlias = normalize(loopPath).endsWith(normalize("examples/example-loop.md"));
-
-  if (actualFilename !== expectedFilename && !isExampleAlias) {
-    errors.push(`Filename must be ${expectedFilename}, but found ${actualFilename}.`);
-  }
-}
-
-if (errors.length > 0) {
-  console.error("Loop validation failed:");
-  for (const error of errors) {
-    console.error(`- ${error}`);
-  }
-  process.exit(1);
-}
+const errors = validateLoop(loopPath, parsed.metadata, parsed.content);
+printErrorsAndExit(errors, "Loop validation");
 
 console.log("Loop validation passed.");
 console.log(JSON.stringify({
-  loop_id: metadata.loop_id,
-  status: metadata.status,
-  title: metadata.title,
-  target_business_repo: metadata.target_business_repo,
-  filename: basename(loopPath),
-  canonical_filename: `${metadata.loop_id}.md`
+  schema_version: parsed.metadata.schema_version,
+  program_id: parsed.metadata.program_id,
+  loop_id: parsed.metadata.loop_id,
+  status: parsed.metadata.status,
+  target_version: parsed.metadata.target_version,
+  target_business_repo: parsed.metadata.target_business_repo
 }, null, 2));

@@ -1,13 +1,16 @@
 ---
-schema_version: 1
+schema_version: 2
+program_id: example-v1
 loop_id: loop-001-example
 title: Example Implementation Loop
-status: ready-for-codex
+status: dispatched
+target_version: 1.0.1
 target_business_repo: OWNER/BUSINESS_REPO
-target_branch: codex/loop-001-example
+target_branch: agent/loop-001-example
 control_repo: OWNER/CONTROL_REPO
+command_path: commands/loop-001-example.json
 created_at: 2026-01-01T00:00:00Z
-created_by: GPT Planning Agent
+created_by: Control Work Agent
 parent_loop_id: null
 attempt: 1
 retry_count: 0
@@ -17,7 +20,8 @@ max_retry_count: 3
 
 ## Background Context
 
-This example loop demonstrates the shape of a task that Codex can execute against a business repository.
+This example loop is one autonomous small-version step inside the
+`example-v1` major-version program.
 
 ## Implementation Goal
 
@@ -30,7 +34,7 @@ Update one placeholder documentation page in the business repository.
 ## Forbidden Changes
 
 - Application source code.
-- Credentials, secrets, or deployment configuration.
+- Credentials, secrets, deployment configuration, or protected policy files.
 
 ## Required Commands
 
@@ -38,19 +42,25 @@ Update one placeholder documentation page in the business repository.
 
 ## Required Outputs
 
-- A business repository change on `codex/loop-001-example`.
-- `reports/codex/loop-001-example-codex-report.md`.
+- A business repository change on `agent/loop-001-example`.
+- A pull request whose body or comments contain an
+  `agent-loop-business-receipt/v2` payload.
+- An archived receipt under `receipts/business/` after the Control Work Agent
+  observes the business result.
 
 ## Acceptance Criteria
 
 - The change is limited to documentation.
-- The report lists commands run and validation evidence.
+- The receipt lists commands, changed files, exact head SHA, and validation
+  evidence.
 - No secrets or environment-specific values are added.
 
 ## Review Instructions
 
-The GPT Agent should inspect the business repository diff, Codex report, and validation evidence.
+The Control Work Agent should inspect the exact pull request head, changed
+files, required checks, test evidence, and business receipt.
 
 ## Next-Loop Planning Hints
 
-If accepted, create the next implementation loop. If validation is missing, create a fix loop that asks Codex to add or run the required validation.
+If accepted, write a structured control review and an exact-head merge
+authorization. If changes are required, create a fix loop and a new command.

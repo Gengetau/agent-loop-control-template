@@ -1,0 +1,19 @@
+{
+  "schema": "agent-loop-command/v2",
+  "program_id": "PROGRAM_ID",
+  "loop_id": "LOOP_ID",
+  "loop_path": "loops/LOOP_ID.md",
+  "target_version": "TARGET_VERSION",
+  "target_business_repo": "OWNER/BUSINESS_REPO",
+  "base_branch": "main",
+  "work_branch": "agent/LOOP_ID",
+  "expected_business_base_sha": "BUSINESS_BASE_SHA",
+  "goal": "CONCRETE_GOAL",
+  "allowed_paths": [],
+  "forbidden_paths": [],
+  "required_checks": [],
+  "acceptance_criteria": [],
+  "receipt_contract": "agent-loop-business-receipt/v2",
+  "issued_at": "2026-01-01T00:00:00Z",
+  "nonce": "UNIQUE_COMMAND_NONCE"
+}
