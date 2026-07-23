@@ -1,32 +1,48 @@
-# Dual-Agent Control Repository Template
+# Work-Native Dual-Agent Control Template
 
-This repository is a reusable control repository template for dual-agent software projects.
+This repository is the durable control plane for two autonomous ChatGPT Work
+agents operating against one software project.
 
-It keeps project planning, loop instructions, Codex execution reports, GPT Agent reviews, and project evolution history outside the business repository. The business repository stays focused on source code and product-facing documentation. The control repository acts as the shared long-term context between the human, Codex, and the GPT Agent.
+- The **Control Work Agent** writes only to this control repository and reads
+  the business repository.
+- The **Business Work Agent** writes only to the business repository and reads
+  this control repository.
+- A **human owner** approves the major-version charter and accepts the finished
+  major version.
 
-The control repository is not a job queue. It is the durable project brain and history log.
+The repositories are the agents' shared fact layer. The agents do not need a
+direct messaging channel, a Workspace Agent API, or an external job queue.
 
-## Core Roles
+## Operating Model
 
-- Human: sets direction, approves important scope changes, and resolves product or business decisions.
-- Codex: executes the current loop against the business repository and writes an execution report.
-- GPT Agent: reviews Codex output, records review decisions, writes the next loop, and updates the current state pointer.
-- Control repository: stores durable project context, loop history, reports, reviews, and decisions.
-- Business repository: stores application source code, tests, and product-facing documentation.
+One long-running Work task is started for each role. While active, each task
+repeats this loop:
 
-n8n is optional. `signals/` and `locks/` are not required for the MVP.
+1. Read its writable repository and the other repository.
+2. Acquire or confirm its role lease.
+3. Perform every currently actionable transition.
+4. Commit a durable checkpoint after each transition.
+5. When waiting for the other role, wait for the configured poll interval and
+   inspect GitHub again.
+6. Exit only when the major version is ready for human acceptance, the project
+   is provably hard-blocked, the account quota is exhausted, or the human
+   explicitly stops the run.
 
-## Basic Lifecycle
+The native Scheduled Task is an optional recovery heartbeat. It is not the
+normal coordination mechanism.
 
-1. Initialize project documents in `project/`.
-2. Create the first loop document under `loops/`.
-3. Update `state/current.md` to point to the current loop.
-4. Codex reads `state/current.md` and executes the current loop against the business repository.
-5. Codex writes `reports/codex/<loop_id>-codex-report.md`.
-6. Codex sends a review request to the GPT Agent through the available browser or agent channel.
-7. The GPT Agent reviews the business repository changes and writes `reviews/gpt-agent/<loop_id>-gpt-review.md`.
-8. The GPT Agent writes the next loop under `loops/` and updates `state/current.md`.
-9. Codex continues with the next loop.
+## Authority Boundaries
+
+| Actor | Writes | Reads | Authority |
+| --- | --- | --- | --- |
+| Human owner | Major-version charter and acceptance decision | Both repositories | Direction, expected outcome, major acceptance |
+| Control Work Agent | Control repository | Both repositories | Decomposition, review, merge authorization, next-loop planning |
+| Business Work Agent | Business repository | Both repositories | Implementation, tests, PRs, fixes, merge, deploy, rollback |
+
+The Business Work Agent cannot authorize its own merge. The Control Work Agent
+cannot modify product code. A merge authorization is valid only for the exact
+business repository, pull request, head SHA, checks, review digest, nonce, and
+expiry recorded in the authorization artifact.
 
 ## Quick Start
 
@@ -34,50 +50,66 @@ n8n is optional. `signals/` and `locks/` are not required for the MVP.
 git clone https://github.com/Gengetau/agent-loop-control-template.git
 cd agent-loop-control-template
 cp config/project.example.json config/project.json
+npm test
 npm run show:state
-npm run validate:loop
 ```
 
-After creating a new project from this template, replace placeholders such as `OWNER/BUSINESS_REPO`, `OWNER/CONTROL_REPO`, and `Example Project`.
+Replace every `OWNER/...`, `Example Project`, and example version value before
+starting a real program.
 
-## Recommended Setup
+## Initialize a Major Version
 
-1. Fill out `project/vision.md`, `project/requirements.md`, `project/architecture.md`, and `project/decisions.md`.
-2. Copy `templates/loop.md` into `loops/<loop_id>.md` for the first real loop.
-3. Update `state/current.md` so `current_loop` points to that loop.
-4. Ask Codex to execute the current loop.
-5. Ask the GPT Agent to review the Codex report and write the next loop.
+1. Copy `templates/program-charter.md` to
+   `programs/<program_id>/charter.md`.
+2. Complete the direction, scope, expected artifact, CI/CD policy, rollback
+   policy, autonomous version policy, hard-block rules, and human acceptance
+   criteria.
+3. Copy `templates/loop.md` and `templates/command.json` for the first small
+   version.
+4. Copy `templates/current-state.json` to `state/current.json` and point it at
+   the charter, loop, and command.
+5. Run `npm test`.
+6. Install `skills/control-work-governor` in the control account and
+   `skills/business-work-executor` in the business account.
+7. Start one long-running Work chat for each role and invoke its installed
+   Skill.
 
-## Main Directories
+## Durable Artifacts
 
+- `programs/`: human-approved major-version charters.
 - `project/`: durable product and architecture context.
-- `loops/`: loop documents that describe Codex execution tasks.
-- `reports/codex/`: Codex execution reports.
-- `reviews/gpt-agent/`: GPT Agent review artifacts.
-- `state/current.md`: human-readable pointer to the current loop and recent artifacts.
-- `docs/`: protocol and agent guides.
-- `templates/`: copyable templates for loops, reports, reviews, state, and project documents.
-- `examples/`: examples that show the expected artifact shape.
+- `state/current.json`: the authoritative global program state.
+- `state/control-agent-lease.json`: the control role's overlap-prevention lease.
+- `loops/`: human-readable small-version and fix specifications.
+- `commands/`: machine-readable dispatch artifacts.
+- `receipts/business/`: copies of business-repository execution receipts
+  archived by the Control Work Agent.
+- `reviews/control-agent/`: structured control reviews.
+- `authorizations/`: exact-SHA merge authorizations.
+- `checkpoints/`: resumable exit and recovery snapshots.
+- `incidents/`: hard-block and rollback evidence.
+- `skills/`: installable connector-first Skills for both Work roles.
+- `templates/`: copyable protocol artifacts.
+- `examples/`: complete example artifacts.
 
-## Status Values
-
-`state/current.md` should use one of these simple status values:
-
-- `ready-for-codex`
-- `codex-running`
-- `ready-for-gpt-review`
-- `changes-requested`
-- `done`
-- `blocked`
+The control repository remains the durable project brain rather than a generic
+job queue. Commands, receipts, reviews, and authorizations are committed
+protocol facts attached to a major-version program.
 
 ## Validation
 
-The scripts are dependency-free:
+The validators have no third-party dependencies:
 
 ```bash
-npm run show:state
 npm run validate:loop
-node scripts/validate-loop.mjs loops/loop-001-example.md
+npm run validate:state
+npm run validate:protocol
+npm test
 ```
 
-These scripts are intentionally small. They help humans and agents catch obvious template mistakes without turning the control repository into a full automation platform.
+`validate:protocol` checks the current state, referenced charter, current loop,
+machine command, optional receipt, review, authorization, and exit checkpoint
+as one consistent snapshot.
+
+See `docs/dual-agent-protocol.md` for the state machine and
+`docs/migration-v1-to-v2.md` when upgrading an existing control repository.

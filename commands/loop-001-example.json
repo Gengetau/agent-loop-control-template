@@ -1,0 +1,31 @@
+{
+  "schema": "agent-loop-command/v2",
+  "program_id": "example-v1",
+  "loop_id": "loop-001-example",
+  "loop_path": "loops/loop-001-example.md",
+  "target_version": "1.0.1",
+  "target_business_repo": "OWNER/BUSINESS_REPO",
+  "base_branch": "main",
+  "work_branch": "agent/loop-001-example",
+  "expected_business_base_sha": "BUSINESS_BASE_SHA",
+  "goal": "Update one placeholder documentation page and provide validation evidence.",
+  "allowed_paths": [
+    "docs/**"
+  ],
+  "forbidden_paths": [
+    ".github/workflows/**",
+    "**/*secret*",
+    "**/*.env"
+  ],
+  "required_checks": [
+    "CI"
+  ],
+  "acceptance_criteria": [
+    "The change is limited to approved documentation paths.",
+    "The receipt includes commands, tests, changed files, and the exact PR head SHA.",
+    "No credentials or environment-specific values are added."
+  ],
+  "receipt_contract": "agent-loop-business-receipt/v2",
+  "issued_at": "2026-01-01T00:00:00Z",
+  "nonce": "example-v1-loop-001-command-001"
+}

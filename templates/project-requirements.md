@@ -14,4 +14,4 @@
 
 ## Open Questions
 
-- Track questions that need human or GPT Agent decisions.
+- Track questions that must be deferred to human major-version planning.

@@ -1,0 +1,19 @@
+{
+  "schema": "control-merge-authorization/v2",
+  "program_id": "example-v1",
+  "loop_id": "loop-001-example",
+  "command_nonce": "example-v1-loop-001-command-001",
+  "receipt_nonce": "example-v1-loop-001-receipt-001",
+  "business_repo": "OWNER/BUSINESS_REPO",
+  "pull_request": 1,
+  "head_sha": "BUSINESS_HEAD_SHA",
+  "decision": "approve-merge",
+  "required_checks": [
+    "CI"
+  ],
+  "review_digest": "sha256:EXAMPLE_REVIEW_DIGEST",
+  "authorization_nonce": "example-v1-loop-001-authorization-001",
+  "issued_at": "2026-01-01T00:21:00Z",
+  "expires_at": "2026-01-01T01:21:00Z",
+  "consumed_by_merge_sha": null
+}

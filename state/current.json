@@ -1,0 +1,25 @@
+{
+  "schema_version": 2,
+  "project_name": "Example Project",
+  "program_id": "example-v1",
+  "major_version": "1.0.0",
+  "business_repo": "OWNER/BUSINESS_REPO",
+  "control_repo": "OWNER/CONTROL_REPO",
+  "charter_path": "programs/example-v1/charter.md",
+  "current_loop": "loops/loop-001-example.md",
+  "current_command": "commands/loop-001-example.json",
+  "last_business_receipt": null,
+  "last_control_review": null,
+  "active_authorization": null,
+  "exit_checkpoint": null,
+  "control_lease": "state/control-agent-lease.json",
+  "status": "dispatching",
+  "exit_reason": null,
+  "cursor": {
+    "control_head": "CONTROL_HEAD_SHA",
+    "business_head": "BUSINESS_BASE_SHA",
+    "active_pull_request": null
+  },
+  "poll_interval_seconds": 300,
+  "updated_at": "2026-01-01T00:00:00Z"
+}

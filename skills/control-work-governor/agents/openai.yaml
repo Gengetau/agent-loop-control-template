@@ -1,0 +1,7 @@
+interface:
+  display_name: "Control Work Governor"
+  short_description: "Govern autonomous dual-agent delivery loops"
+  default_prompt: "Use $control-work-governor to review the current business result and advance the major-version loop."
+
+policy:
+  allow_implicit_invocation: true

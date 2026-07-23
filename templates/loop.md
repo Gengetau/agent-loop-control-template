@@ -1,56 +1,55 @@
 ---
-schema_version: 1
+schema_version: 2
+program_id: PROGRAM_ID
 loop_id: loop-001-example
 title: Example Implementation Loop
-status: ready-for-codex
+status: dispatched
+target_version: 1.0.1
 target_business_repo: OWNER/BUSINESS_REPO
-target_branch: codex/loop-001-example
+target_branch: agent/loop-001-example
 control_repo: OWNER/CONTROL_REPO
+command_path: commands/loop-001-example.json
 created_at: 2026-01-01T00:00:00Z
-created_by: GPT Planning Agent
+created_by: Control Work Agent
 parent_loop_id: null
 attempt: 1
 retry_count: 0
 max_retry_count: 3
 ---
-# Loop 001: Example Implementation Loop
+# LOOP_ID: TITLE
 
 ## Background Context
 
-Summarize the project context Codex needs before making changes. Link to relevant files under `project/` and the business repository.
+Summarize only the project context needed for this implementation step.
 
 ## Implementation Goal
 
-Describe the concrete change Codex should make in the business repository.
+Describe one concrete business-repository outcome.
 
 ## Allowed Changes
 
-List the files, directories, or behaviors Codex may modify.
-
 ## Forbidden Changes
-
-List anything Codex must not modify, even if it looks related.
 
 ## Required Commands
 
-List commands Codex must run, such as tests, linters, builds, or focused validation scripts.
-
 ## Required Outputs
 
-List required business repository changes and the Codex report path.
+List the required business change, pull request, machine-readable business
+receipt, tests, and deployment evidence.
 
 ## Acceptance Criteria
 
-Define the checks a reviewer should use to decide whether the loop is complete.
-
 ## Review Instructions
 
-Tell the GPT Agent what to inspect during review.
+Tell the Control Work Agent what to inspect during independent review.
 
 ## Next-Loop Planning Hints
 
-Suggest likely follow-up work if this loop is accepted or changes are requested.
+Describe how this loop advances the major-version charter and which follow-up
+loops are allowed if it is accepted or changes are requested.
 
 ## Retry and Follow-Up Metadata
 
-Use `attempt` for the current execution attempt number for this loop. Use `retry_count` for the number of completed retries after a failed or changes-requested attempt. Keep `max_retry_count` as the retry limit. Use `parent_loop_id` when this loop follows or replaces an earlier loop; otherwise leave it as `null`.
+Use `attempt` for the current execution attempt number and `retry_count` for
+completed retries. Before declaring a hard block, apply the recovery policy in
+the major-version charter and record every failed alternative.

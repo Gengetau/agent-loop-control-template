@@ -1,0 +1,19 @@
+{
+  "schema": "agent-loop-business-receipt/v2",
+  "program_id": "PROGRAM_ID",
+  "loop_id": "LOOP_ID",
+  "command_nonce": "COMMAND_NONCE",
+  "business_repo": "OWNER/BUSINESS_REPO",
+  "base_sha": "BASE_SHA",
+  "head_sha": "HEAD_SHA",
+  "pull_request": 1,
+  "work_branch": "agent/LOOP_ID",
+  "execution_status": "ready-for-control-review",
+  "changed_files": [],
+  "commands": [],
+  "checks": [],
+  "deployment": null,
+  "known_risks": [],
+  "emitted_at": "2026-01-01T00:00:00Z",
+  "receipt_nonce": "UNIQUE_RECEIPT_NONCE"
+}

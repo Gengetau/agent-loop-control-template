@@ -1,0 +1,34 @@
+{
+  "schema": "agent-loop-business-receipt/v2",
+  "program_id": "example-v1",
+  "loop_id": "loop-001-example",
+  "command_nonce": "example-v1-loop-001-command-001",
+  "business_repo": "OWNER/BUSINESS_REPO",
+  "base_sha": "BUSINESS_BASE_SHA",
+  "head_sha": "BUSINESS_HEAD_SHA",
+  "pull_request": 1,
+  "work_branch": "agent/loop-001-example",
+  "execution_status": "ready-for-control-review",
+  "changed_files": [
+    "docs/example.md"
+  ],
+  "commands": [
+    {
+      "command": "npm run docs:check",
+      "status": "passed",
+      "summary": "Documentation validation passed."
+    }
+  ],
+  "checks": [
+    {
+      "name": "CI",
+      "status": "success",
+      "head_sha": "BUSINESS_HEAD_SHA",
+      "url": "https://github.com/OWNER/BUSINESS_REPO/actions/runs/1"
+    }
+  ],
+  "deployment": null,
+  "known_risks": [],
+  "emitted_at": "2026-01-01T00:15:00Z",
+  "receipt_nonce": "example-v1-loop-001-receipt-001"
+}
